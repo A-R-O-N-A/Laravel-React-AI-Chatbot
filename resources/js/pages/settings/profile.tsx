@@ -119,8 +119,9 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         </div>
                     </form>
                 </div>
-
-                <DeleteUser />
+                
+                {/* temporarily removed */}
+                {/* <DeleteUser /> */}
             </SettingsLayout>
         </AppLayout>
     );

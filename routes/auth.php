@@ -8,16 +8,41 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredUserController::class, 'create'])
-        ->name('register');
+// Route::middleware(['guest', 'nocache'])->group(function () {
+// Route::middleware(['guest', 'guest.redirect'])->group(function () {
+
+    // below is the defaully registyer route
+    // Route::get('register', [RegisteredUserController::class, 'create'])
+    //     ->name('register');
+
+    // below is the editted registed route to redirect us back to the dashboard if we area logged in
+    Route::get('register', function() {
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+
+        return app(RegisteredUserController::class)->create();
+    })->name('register');
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
+    // below is the defauly loging route
+
+    // Route::get('login', [AuthenticatedSessionController::class, 'create'])
+    //     ->name('login');
+
+    // below is the edited login route to redirect us back to the dashboard if we have logged in
+    Route::get('login', function() {
+        if(Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+
+        return app(AuthenticatedSessionController::class)->create(request());
+    })->name('login');
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 

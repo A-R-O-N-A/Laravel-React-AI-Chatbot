@@ -44,9 +44,18 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
-                'user' => $request->user(),
+                // 'user' => $request->user(),
+                // 'user' => $request->user() ? $request->user()->load('chatrooms') : null,
+                'user' => $request->user() ? $request->user()->load(['chatrooms' => function ($query) {
+                    $query->where('is_archived', false);
+                }]) : null,
             ],
-            'ziggy' => fn (): array => [
+
+            'flash' => [
+                'message' => fn() => $request->session()->get('message')
+            ],
+
+            'ziggy' => fn(): array => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],

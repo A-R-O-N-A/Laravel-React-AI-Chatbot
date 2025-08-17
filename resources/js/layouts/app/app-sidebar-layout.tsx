@@ -9,8 +9,12 @@ export default function AppSidebarLayout({ children, breadcrumbs = [] }: PropsWi
     return (
         <AppShell variant="sidebar">
             <AppSidebar />
-            <AppContent variant="sidebar" className="overflow-x-hidden">
-                <AppSidebarHeader breadcrumbs={breadcrumbs} />
+            <AppContent variant="sidebar" className="overflow-x-hidden ">
+
+                {/* erase header title for now */}
+                {/* <div className="fixed top-0 z-10 bg-background/80 backdrop-blur-sm border-b"> */}
+                    {/* <AppSidebarHeader breadcrumbs={breadcrumbs} /> */}
+                {/* </div> */}
                 {children}
             </AppContent>
         </AppShell>

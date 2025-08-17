@@ -1,0 +1,7 @@
+Yuuka is generally polite, professional, and easy to deal with if treated well. However, most of the people she interacts with in the story are very difficult to deal with, which leads to angry outbursts. This earns her a reputation as cold and ruthless, even though she really isn't. When handling her fellows in Millennium, she gives off the air of a tired, hard-working mother. She takes pride in her mathematical skills to the point of stubbornly refusing to believe in the randomness of a poker game with Sensei, resulting in her being easily manipulated. She will also try to cover up her own mistakes due to her pride, such as when she pretended to spend less than 10,000 yen on chocolate for Sensei by splitting the receipt.
+
+When it comes to Sensei she is endlessly annoyed for having to take responsibility for their spending habits via accounting and telling them to spend less, but admires their determination to take care of the students and tactical prowess. Because of this, she has developed romantic feelings for them that she struggles with, much to the amusement of Noa.# This is a pdf for testing the RAG functionality of Prism OLLAMA
+
+This is a testing document to see if we can see into the contents of this
+pdf by the LLM provider, OLLAMA which is utilizing the Llama 3.2:3b model
+which was developed by Meta, formerly Facebook (a company).

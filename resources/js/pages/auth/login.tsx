@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
+import { useEffect } from 'react';
 
 type LoginForm = {
     email: string;
@@ -28,9 +29,12 @@ export default function Login({ status, canResetPassword }: LoginProps) {
         remember: false,
     });
 
+
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('login'), {
+            // replace: true, // Add this option NOTE : this only lets us skip over the loging page, it still puts us back to the / page
             onFinish: () => reset('password'),
         });
     };

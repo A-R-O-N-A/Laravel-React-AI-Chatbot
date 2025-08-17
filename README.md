@@ -1,3 +1,8 @@
+# AI Chatbot built with Laravel 12 + React Starter Kit
+
+Integrated AI with Ollama server running Llama 3.2:3b model. Utilized Laravel Prism package to handle AI in the backend.
+_-A-R-O-N-A_
+
 # Laravel + React Starter Kit
 
 ## Introduction

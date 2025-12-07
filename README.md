@@ -3,6 +3,57 @@
 Integrated AI with Ollama server running Llama 3.2:3b model. Utilized Laravel Prism package to handle AI in the backend.
 _-A-R-O-N-A_
 
+# When freshly cloned
+
+you will need to do the following commands for setting up the project
+
+```sh
+# copy the example .env
+cp .env.example .env
+
+# generate artisan key:generate
+php artisan key:generate
+
+# Configure database migration
+php artisan migrate 
+
+# if using seeders
+php artisan db:seed
+
+# Clear cashe and rebuild
+php artisan config:clear
+php artisan cache:clear
+php artisan route:clear
+php artisan view:clear
+```
+
+## Installking npm and composer depencencies
+
+```sh
+# NPM
+npm install
+
+# Composer
+composer install
+```
+
+## Finally running
+
+```sh
+npm run dev
+```
+
+```sh
+php artisan serve
+```
+
+_or_
+
+```sh
+composer run dev
+```
+
+_below from original kit readme_
 # Laravel + React Starter Kit
 
 ## Introduction

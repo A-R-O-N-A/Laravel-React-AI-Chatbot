@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-import { Head, useForm, usePage } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
-
-=======
->>>>>>> 87110a39cd2f9c21d54922b59ac271105865b219
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
@@ -12,18 +5,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
-<<<<<<< HEAD
-import { useEffect } from 'react';
-
-type LoginForm = {
-    email: string;
-    password: string;
-    remember: boolean;
-};
-=======
 import { Form, Head } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
->>>>>>> 87110a39cd2f9c21d54922b59ac271105865b219
 
 interface LoginProps {
     status?: string;
@@ -31,25 +14,6 @@ interface LoginProps {
 }
 
 export default function Login({ status, canResetPassword }: LoginProps) {
-<<<<<<< HEAD
-    const { data, setData, post, processing, errors, reset } = useForm<Required<LoginForm>>({
-        email: '',
-        password: '',
-        remember: false,
-    });
-
-
-
-    const submit: FormEventHandler = (e) => {
-        e.preventDefault();
-        post(route('login'), {
-            // replace: true, // Add this option NOTE : this only lets us skip over the loging page, it still puts us back to the / page
-            onFinish: () => reset('password'),
-        });
-    };
-
-=======
->>>>>>> 87110a39cd2f9c21d54922b59ac271105865b219
     return (
         <AuthLayout title="Log in to your account" description="Enter your email and password below to log in">
             <Head title="Log in" />

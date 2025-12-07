@@ -35,7 +35,8 @@ export const handleSubmit = (post: any, setData: any, data: any) => {
         onSuccess: () => {
 
             // process the ai message after displaying on screen
-            post(route('messages.send_ai'))
+            // post(route('messages.send_ai'))
+            post(route('messages.send_ai_fastapi'))
         },
         onError: (errors: any) => {
             console.log('Errors sending message : ', errors)

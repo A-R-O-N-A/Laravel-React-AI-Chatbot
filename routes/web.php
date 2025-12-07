@@ -38,6 +38,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // this is for the messages
     Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
     Route::post('/messages/ai', [MessageController::class, 'send_ai_message'])->name('messages.send_ai');
+    
+    // fastapi experimental
+    Route::post('/messages/ai/fastapi', [MessageController::class, 'sent_ai_message_fastapi'])->name('messages.send_ai_fastapi');
 
 });
 

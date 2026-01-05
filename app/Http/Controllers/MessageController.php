@@ -72,6 +72,8 @@ class MessageController extends Controller
         // extract contante
         $fastapi_ai_response = $response->json()['content'];
 
+        // dd($response->json());
+
         // create mesage in db
         Message::create([
             'content' => $fastapi_ai_response,

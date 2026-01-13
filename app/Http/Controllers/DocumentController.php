@@ -65,30 +65,31 @@ class DocumentController extends Controller
 
         $embeddings =  $this->fastapi_vectorize($request);
 
-        dd($embeddings);
+        // dd($embeddings);
 
-        // $file = $request->file('document');
-        // $path =$file->store('documents', 'public');
+        $file = $request->file('document');
+        $path =$file->store('documents', 'public');
 
-        // $document = Document::create([
-        //     'name' => $file->getClientOriginalName(),
-        //     'path' => $path,
-        //     'mime_type' => $file->getClientMimeType(),
-        //     'size' => $file->getSize(),
-        //     'disk' => 'public',
-        //     // 'user_id' => auth()->id(),
-        //     'user_id' => Auth::id(),
-        // ]);
+        $document = Document::create([
+            'name' => $file->getClientOriginalName(),
+            'path' => $path,
+            'mime_type' => $file->getClientMimeType(),
+            'size' => $file->getSize(),
+            'disk' => 'public',
+            // 'user_id' => auth()->id(),
+            'user_id' => Auth::id(),
+            'embeddings' => $embeddings,
+        ]);
 
-        // // attach to chatroom if chatroom_id is provided
+        // attach to chatroom if chatroom_id is provided
 
-        // if ($request->chatroom_id) {
-        //     Chatroom::findOrFail($request->chatroom_id)->documents()->attach($document->id);
-        // }
+        if ($request->chatroom_id) {
+            Chatroom::findOrFail($request->chatroom_id)->documents()->attach($document->id);
+        }
 
-        // // add optional error message if needed
+        // add optional error message if needed
 
-        // return back()->with('message', 'Document uploaded successfully.');
+        return back()->with('message', 'Document uploaded successfully.');
     }
 
     /**

@@ -16,10 +16,12 @@ class Document extends Model
         'size',
         'disk',
         'user_id',
+        'embeddings',
     ];
 
     protected $casts = [
         'size' => 'integer',
+        'embeddings' => 'array',
     ];
 
     public function user() : BelongsTo {

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Exceptions\StreamedResponseException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Prism\Prism\Enums\Provider;
 use Prism\Prism\Prism;
 use Prism\Prism\ValueObjects\Messages\AssistantMessage;
@@ -44,10 +45,30 @@ class MessageController extends Controller
 
     public function sent_ai_message_fastapi(Request $request)
     {
-        ini_set('max_execution_time', 600); // Allow up to 10 minutes
+        ini_set('max_execution_time', 0); // Allow up to 10 minutes
 
         $chatroom = Chatroom::find($request->chatroom_id);
         $messages = $chatroom->messages()->orderBy('created_at', 'asc')->get();
+
+        $embeddings = $chatroom->documents()
+            ->select('documents.id', 'documents.embeddings')
+            ->get()
+            ->pluck('embeddings', 'id');
+
+
+        // Fetch documents with embeddings
+        $documents = $chatroom->documents()
+            ->select('documents.id', 'documents.name', 'documents.path', 'documents.embeddings', 'documents.mime_type')
+            ->get();
+        $documentContent = [];
+        foreach ($documents as $doc) {
+            $content = Storage::disk($doc->disk ?? 'public')->get($doc->path);
+            $documentContent[$doc->id] = [
+                'name' => $doc->name,
+                'content' => base64_encode($content),  // Base64 encode binary content
+                'mime_type' => $doc->mime_type
+            ];
+        }
 
         // prepare message history request
         $fastapi_messages = [];
@@ -65,10 +86,17 @@ class MessageController extends Controller
             }
         }
 
+        // dd($documentContent);
+
         // get responst with message history
-        $response = Http::post('http://127.0.0.1:8080/api/lab/test/array', [
-            "messages" => $fastapi_messages
+        // $response = Http::post('http://127.0.0.1:8080/api/lab/test/array', [
+        $response = Http::post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama', [
+            "messages" => $fastapi_messages,
+            "embeddings" => $embeddings,
+            "documents" => $documentContent,
         ]);
+
+        dd($response->json());
 
         if (isset($response->json()['content'])) {
             $fastapi_ai_response = $response->json()['content'];
@@ -78,18 +106,18 @@ class MessageController extends Controller
         }
 
         // extract contante
-        // $fastapi_ai_response = $response->json()['content'];
+        $fastapi_ai_response = $response->json()['content'];
 
         // dd($response->json());
 
         // create mesage in db
-        Message::create([
-            'content' => $fastapi_ai_response,
-            'chatroom_id' => $request->input('chatroom_id'),
-            'role' => 'assistant'
-        ]);
+        // Message::create([
+        //     'content' => $fastapi_ai_response,
+        //     'chatroom_id' => $request->input('chatroom_id'),
+        //     'role' => 'assistant'
+        // ]);
 
-        return redirect()->back()->with('message', 'Conversation updated successfully.');
+        // return redirect()->back()->with('message', 'Conversation updated successfully.');
     }
 
     public function send_ai_message(Request $request)
@@ -127,7 +155,8 @@ class MessageController extends Controller
         return redirect()->back()->with('message', 'Conversation updated successfully.');
     }
 
-    public function rag_file_upload(Request $request) {
+    public function rag_file_upload(Request $request)
+    {
         // handle file upload for RAG 
         // dd($request->all());
 

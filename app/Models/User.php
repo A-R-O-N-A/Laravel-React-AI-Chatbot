@@ -13,6 +13,14 @@ class User extends Authenticatable
         return $this->hasMany(Chatroom::class);
     }
 
+    // for deleting associated documents
+    protected static function booted() {
+        static::deleting(function (User $user) {
+            // load and delete each Document so Document::deleting is called
+            $user->documents()->get()->each->delete();
+        });
+    }
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 

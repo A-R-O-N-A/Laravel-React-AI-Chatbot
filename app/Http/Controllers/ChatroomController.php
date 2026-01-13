@@ -15,7 +15,8 @@ class ChatroomController extends Controller
             'messages' => $chatroom
                 ->messages()
                 ->orderBy('created_at', 'asc')
-                ->get() 
+                ->get() ,
+            'chat_documents' => $chatroom->documents()->get(),
         ]);
     }
 

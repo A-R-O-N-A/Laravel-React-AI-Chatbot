@@ -1,8 +1,11 @@
-import { Settings, Users, Info } from "lucide-react";
+import { Settings, Users, Info, FileText, Brain } from "lucide-react";
 import { ArchiveDialog } from "./archive-dialog";
 import { UpdateDialog } from "./update-dialog";
+import DocumentListDialog from "./document-list-dialog";
 import { usePage } from "@inertiajs/react";
 import { FlashAlert } from "./flash-alert";
+import { useState, useEffect } from "react";
+import axios from "axios"
 
 export function RightSidebar({ chatroom }: { chatroom: any }) {
     const { flash } = usePage().props as any;
@@ -35,6 +38,7 @@ export function RightSidebar({ chatroom }: { chatroom: any }) {
 
                 {/* Archive Section */}
                 <div className="space-y-2">
+
                     <div className="flex items-center gap-2 text-sm">
                         <Settings className="h-4 w-4" />
                         <span className="font-sm">Actions</span>
@@ -45,6 +49,18 @@ export function RightSidebar({ chatroom }: { chatroom: any }) {
                         <ArchiveDialog chatroom={chatroom} />
                     </div>
 
+                </div>
+
+                <div className="space-y-2">
+
+                    <div className="flex items-center gap-2 text-sm">
+                        <Brain className="h-4 w-4" />
+                        <span className="font-sm">Documents</span>
+                    </div>
+
+                    <div className="pl-6 space-y-2">
+                        <DocumentListDialog chatroom={chatroom} />
+                    </div>
                 </div>
 
                 {/* AI Model Info */}

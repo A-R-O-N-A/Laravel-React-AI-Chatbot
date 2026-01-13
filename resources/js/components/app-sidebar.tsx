@@ -66,8 +66,8 @@ export function AppSidebar() {
 
 
                     {/* removeed sidebar trigger */}
-{/* 
-                    <SidebarMenuItem> 
+
+                    {/* <SidebarMenuItem> 
                         <SidebarMenuButton size="lg" 
                             // className='justify-start' 
                             asChild

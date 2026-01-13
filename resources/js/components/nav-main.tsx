@@ -9,7 +9,7 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 import SidebarChatrooms from './chatroom_custom/sidebar-chartooms';
 import SidebarAddChatroom from './chatroom_custom/sidebar-add-chatroom';
-
+import FileUpload from './chatroom_custom/file-upload';
 
 const handleSubmit = (post: any, setOpen: any, setData: any) => {
     console.log('data submitting : ')
@@ -36,6 +36,10 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
                 {/* Create new Chatroom butom */}
 
                 <SidebarAddChatroom />
+
+                {/* file upload button */}
+
+                <FileUpload />
 
                 {/* list down the chatrooms */}
 

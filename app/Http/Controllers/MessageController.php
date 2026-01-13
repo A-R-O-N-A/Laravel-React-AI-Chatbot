@@ -44,6 +44,7 @@ class MessageController extends Controller
 
     public function sent_ai_message_fastapi(Request $request)
     {
+        ini_set('max_execution_time', 600); // Allow up to 10 minutes
 
         $chatroom = Chatroom::find($request->chatroom_id);
         $messages = $chatroom->messages()->orderBy('created_at', 'asc')->get();
@@ -69,8 +70,15 @@ class MessageController extends Controller
             "messages" => $fastapi_messages
         ]);
 
+        if (isset($response->json()['content'])) {
+            $fastapi_ai_response = $response->json()['content'];
+        } else {
+            Log::error('FastAPI response error: ' . $response->body());
+            return redirect()->back()->with('message', $response->json()['error'] ?? 'Unknown error from AI service.');
+        }
+
         // extract contante
-        $fastapi_ai_response = $response->json()['content'];
+        // $fastapi_ai_response = $response->json()['content'];
 
         // dd($response->json());
 
@@ -117,5 +125,16 @@ class MessageController extends Controller
             'role' => 'assistant'
         ]);
         return redirect()->back()->with('message', 'Conversation updated successfully.');
+    }
+
+    public function rag_file_upload(Request $request) {
+        // handle file upload for RAG 
+        // dd($request->all());
+
+        $response = Http::post('http://127.0.0.1:8080/api/lab/test/rag/file/vectorize/', [
+            "file" => $request->file('file')
+        ]);
+
+        dd($response->all());
     }
 }

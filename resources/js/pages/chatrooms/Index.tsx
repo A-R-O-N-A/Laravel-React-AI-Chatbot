@@ -11,7 +11,7 @@ import { useAutoScroll, useUpdateChatroomID } from "@/hooks/chatroom/use-chat-fu
 import { ChatroomProps } from "@/types/chatroom";
 
 export default function Index() {
-    const { chatroom, messages } = usePage<ChatroomProps>().props
+    const { chatroom, messages, documents } = usePage<ChatroomProps>().props
     const { data, setData, post, processing } = useForm({
         chatroom_id: chatroom.id,
         content: '',

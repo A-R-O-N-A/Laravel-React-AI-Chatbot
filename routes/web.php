@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ChatroomController;
+use App\Http\Controllers\ChatroomDocumentController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +44,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // fastapi experimental
     Route::post('/messages/ai/fastapi', [MessageController::class, 'sent_ai_message_fastapi'])->name('messages.send_ai_fastapi');
 
+    // test the file upload route
+    Route::post('/file/upload/', [MessageController::class, 'rag_file_upload'])->name('rag.file_upload');
+
+    // new resource controllers
+    Route::resource('documents', DocumentController::class);
+    Route::resource('chatroom-documents', ChatroomDocumentController::class);
 });
 
 

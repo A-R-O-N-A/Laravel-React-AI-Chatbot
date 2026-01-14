@@ -17,6 +17,10 @@ export default function Index() {
         content: '',
     })
 
+    const { flash } = usePage().props
+
+    console.log('Message results : ', flash.results)
+
     const messagesEndRef = useRef<HTMLDivElement>(null)
 
     useAutoScroll({ messagesEndRef, messages })

@@ -174,7 +174,7 @@ export default function DocumentListDialog({ chatroom }: { chatroom: Chatroom })
                 Documents
             </Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="max-w-2xl sm:max-w-3xl lg:max-w-4xl   ">
 
             <DialogHeader>
                 <DialogTitle>RAG Documents</DialogTitle>

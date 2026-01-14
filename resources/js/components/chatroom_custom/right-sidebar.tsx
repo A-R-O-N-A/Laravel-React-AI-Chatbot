@@ -4,6 +4,7 @@ import { UpdateDialog } from "./update-dialog";
 import DocumentListDialog from "./document-list-dialog";
 import { usePage } from "@inertiajs/react";
 import { FlashAlert } from "./flash-alert";
+import DocumentResultsDialog from "./document-results-dialog";
 import { useState, useEffect } from "react";
 import axios from "axios"
 
@@ -74,7 +75,11 @@ export function RightSidebar({ chatroom }: { chatroom: any }) {
                     </div>
                 </div>
 
+                <DocumentResultsDialog results={ flash.results }/>
+
                 <FlashAlert flash={flash} />
+
+
             </div>
 
         </div>

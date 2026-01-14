@@ -45,7 +45,9 @@ class MessageController extends Controller
 
     public function sent_ai_message_fastapi(Request $request)
     {
-        ini_set('max_execution_time', 0); // Allow up to 10 minutes
+        // ini_set('max_execution_time', 0); // Allow up to 10 minutes
+        ini_set('max_execution_time', 3600);
+        set_time_limit(3600);
 
         $chatroom = Chatroom::find($request->chatroom_id);
         $messages = $chatroom->messages()->orderBy('created_at', 'asc')->get();
@@ -90,35 +92,46 @@ class MessageController extends Controller
 
         // get responst with message history
         // $response = Http::post('http://127.0.0.1:8080/api/lab/test/array', [
-        $response = Http::post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama', [
+        // $response = Http::post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama', [
+        $response = Http::timeout(6000)->connectTimeout(6000)->post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama', [
+
             "messages" => $fastapi_messages,
             "embeddings" => $embeddings,
             "documents" => $documentContent,
         ]);
 
-        dd($response->json());
+        // dd($response->json());
 
-        if (isset($response->json()['content'])) {
-            $fastapi_ai_response = $response->json()['content'];
-        } else {
-            Log::error('FastAPI response error: ' . $response->body());
-            return redirect()->back()->with('message', $response->json()['error'] ?? 'Unknown error from AI service.');
-        }
+        // if (isset($response->json()['content'])) {
+        //     $fastapi_ai_response = $response->json()['content'];
+        // } else {
+        //     Log::error('FastAPI response error: ' . $response->body());
+        //     return redirect()->back()->with('message', $response->json()['error'] ?? 'Unknown error from AI service.');
+        // }
 
         // extract contante
-        $fastapi_ai_response = $response->json()['content'];
+        // $fastapi_ai_response = $response->json()['content'];
 
         // dd($response->json());
 
+        $results = $response->json()['results'] ?? [];
+
         // create mesage in db
-        // Message::create([
-        //     'content' => $fastapi_ai_response,
-        //     'chatroom_id' => $request->input('chatroom_id'),
-        //     'role' => 'assistant'
-        // ]);
+        Message::create([
+            //     'content' => $fastapi_ai_response,
+            // 'content' => $response,
+            'content' => $response->json()['ai_response'],
+            'chatroom_id' => $request->input('chatroom_id'),
+            'role' => 'assistant'
+        ]);
 
         // return redirect()->back()->with('message', 'Conversation updated successfully.');
-    }
+
+        return redirect()->back()->with([
+            'message' => 'Conversation updated successfully.',
+            'results' => $results ,
+        ]);
+    }   
 
     public function send_ai_message(Request $request)
     {

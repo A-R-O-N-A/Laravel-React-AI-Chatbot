@@ -62,6 +62,7 @@ export function RightSidebar({ chatroom }: { chatroom: any }) {
                     <div className="pl-6 space-y-2">
                         <DocumentListDialog chatroom={chatroom} />
                     </div>
+
                 </div>
 
                 {/* AI Model Info */}
@@ -75,7 +76,7 @@ export function RightSidebar({ chatroom }: { chatroom: any }) {
                     </div>
                 </div>
 
-                <DocumentResultsDialog results={ flash.results }/>
+                {/* <DocumentResultsDialog results={ flash.results }/> */}
 
                 <FlashAlert flash={flash} />
 

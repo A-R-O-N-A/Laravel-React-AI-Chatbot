@@ -1,4 +1,4 @@
-import { Check, FileText, Search, X } from "lucide-react";
+import { Check, FileText, Quote, Search, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
@@ -6,6 +6,7 @@ import { Badge } from "../ui/badge";
 import { Switch } from "../ui/switch";
 import { Card, CardContent } from "../ui/card";
 import { ScrollArea } from "../ui/scroll-area";
+import PDFPreview from "./pdf-preview";
 
 export default function DocumentResultsDialog({ results }: any) {
     const resultCount = results?.length || 0;
@@ -13,21 +14,22 @@ export default function DocumentResultsDialog({ results }: any) {
 
     return (        <Dialog>
             <DialogTrigger asChild>
+
                 <Button
-                    variant='outline' 
-                    size='sm' 
-                    className='w-full justify-start gap-2'
+                    variant='ghost' 
+                    size='icon'
+                    className='h-7 w-7 relative'
+                    title="View sources"
                 >
-                    <FileText className="h-4 w-4" />
-                    <span>View Results</span>
+                    <Quote className="h-3.5 w-3.5" />
                     {resultCount > 0 && (
-                        <Badge variant="secondary" className="ml-auto">
-                            {resultCount}
-                        </Badge>
+                        <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] font-medium text-primary-foreground flex items-center justify-center">
+                             {resultCount}
+                        </span>
                     )}
                 </Button>
             </DialogTrigger>
-            {/* <DialogContent className="max-w-3xl max-h-[80vh]"> */}
+
 
             <DialogContent className="max-w-2xl sm:max-w-3xl lg:max-w-4xl   ">
 
@@ -65,7 +67,9 @@ export default function DocumentResultsDialog({ results }: any) {
                                             {res.text_snippet || 'No preview available'}
                                         </p>
                                     </CardContent>
+                                    <PDFPreview result={ res }/>
                                 </Card>
+
 
                             ))}
 

@@ -5,10 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\Chatroom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
 class ChatroomController extends Controller
-{
+{   
+    public function ping() {
+        return Inertia::render('chatrooms/Ping');
+    }
+
+    public function ping_fastapi(Request $request) {
+
+        $message = $request->input('message');
+
+        $ping_response = Http::post('http://127.0.0.1:8080/api/lab/test/ping', [
+            'message' => $message
+        ]);
+
+        return redirect()->back()->with('message', $ping_response->json('message'));
+    }
+
     public function show(Chatroom $chatroom) { 
         return Inertia::render('chatrooms/Index', [
             'chatroom' => $chatroom,

@@ -50,6 +50,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // new resource controllers
     Route::resource('documents', DocumentController::class);
     Route::resource('chatroom-documents', ChatroomDocumentController::class);
+
+    // utility
+    Route::get('/doucments/{docId}/preview', [DocumentController::class, 'getPDFPreview'])->name('documents.preview');
+
+    // ping
+    Route::get('/ping/test', [ChatroomController::class, 'ping'])->name('ping.text');
+    Route::post('/ping/test/message', [ChatroomController::class, 'ping_fastapi'])->name('ping.fastapi');
 });
 
 

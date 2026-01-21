@@ -11,6 +11,7 @@ class Message extends Model
         'is_unsent',
         'chatroom_id',
         'role',
+        'vector_results',
     ];
 
     public function chatroom() {

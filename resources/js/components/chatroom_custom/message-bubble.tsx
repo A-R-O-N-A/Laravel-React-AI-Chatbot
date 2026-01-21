@@ -1,7 +1,10 @@
 import { Card, CardContent } from "../ui/card";
 import ReactMarkdown from 'react-markdown';
+import DocumentResultsDialog from "./document-results-dialog";
+import DocumentResultsPreview from "./document-results-preview";
 
 export default function MessageBubble({ messages }: { messages: any }) {
+
     return (<>
         {messages.map((message: any) => {
             return (<>
@@ -27,6 +30,7 @@ export default function MessageBubble({ messages }: { messages: any }) {
 
                     </>
                     : <>
+                        {console.log('Vector results in MessageBubble : ', message.vector_results)}
 
                         {/* AI ASSISTANT */}
                         <div className="flex justify-start">
@@ -57,9 +61,19 @@ export default function MessageBubble({ messages }: { messages: any }) {
                                     >
                                         {message.content}
                                     </ReactMarkdown>
-                                    <p className="text-xs text-muted-foreground/70 mt-2">
-                                        {new Date(message.created_at).toLocaleString()}
-                                    </p>
+
+                                    <div className="flex items-center justify-between mt-2">
+
+                                        <p className="text-xs text-muted-foreground/70">
+                                            {new Date(message.created_at).toLocaleString()}
+                                        </p>
+
+                                        {message.vector_results && (
+                                            // <DocumentResultsDialog results={JSON.parse(message.vector_results)} />
+                                            <DocumentResultsPreview results={JSON.parse(message.vector_results)} />
+                                        )}
+                                    </div>
+
                                 </CardContent>
                             </Card>
                         </div>

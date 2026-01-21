@@ -7,6 +7,7 @@ use App\Models\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class DocumentController extends Controller
@@ -68,7 +69,7 @@ class DocumentController extends Controller
         // dd($embeddings);
 
         $file = $request->file('document');
-        $path =$file->store('documents', 'public');
+        $path = $file->store('documents', 'public');
 
         $document = Document::create([
             'name' => $file->getClientOriginalName(),
@@ -90,6 +91,27 @@ class DocumentController extends Controller
         // add optional error message if needed
 
         return back()->with('message', 'Document uploaded successfully.');
+    }
+    public function getPDFPreview($docId)
+    {
+        $document = Document::find($docId);
+
+        if (!$document) {
+            return response()->json(['error' => 'Document not found'], 404);
+        }
+
+        $filePath = $document->path;
+
+        if (!Storage::disk('public')->exists($filePath)) {
+            return response()->json(['error' => 'File not found at: ' . $filePath], 404);
+        }
+
+        $fileContent = Storage::disk('public')->get($filePath);
+        $mimeType = Storage::disk('public')->mimeType($filePath);
+
+        return response($fileContent, 200)
+            ->header('Content-Type', $mimeType)
+            ->header('Content-Disposition', 'inline; filename="' . $document->name . '"');
     }
 
     /**

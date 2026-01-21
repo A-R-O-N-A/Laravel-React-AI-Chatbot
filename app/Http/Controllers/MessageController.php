@@ -93,7 +93,8 @@ class MessageController extends Controller
         // get responst with message history
         // $response = Http::post('http://127.0.0.1:8080/api/lab/test/array', [
         // $response = Http::post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama', [
-        $response = Http::timeout(6000)->connectTimeout(6000)->post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama', [
+        $response = Http::timeout(6000)->connectTimeout(6000)->post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama/bm25', [
+        // $response = Http::timeout(6000)->connectTimeout(6000)->post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama', [
 
             "messages" => $fastapi_messages,
             "embeddings" => $embeddings,
@@ -122,7 +123,9 @@ class MessageController extends Controller
             // 'content' => $response,
             'content' => $response->json()['ai_response'],
             'chatroom_id' => $request->input('chatroom_id'),
-            'role' => 'assistant'
+            'role' => 'assistant',
+            'vector_results' => json_encode($results),
+            // 'vector_results' => $results,
         ]);
 
         // return redirect()->back()->with('message', 'Conversation updated successfully.');

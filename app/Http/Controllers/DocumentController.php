@@ -42,6 +42,33 @@ class DocumentController extends Controller
      * Store a newly created resource in storage.
      */
 
+    public function fastapi_vectorize_test(Request $request) {
+
+        return Inertia::render('testbed/file-vectorize');
+    }
+
+    public function vectorize_test(Request $request) {
+        $embeddings = $this->fastapi_vectorize($request);
+
+        // return response()->json([
+        //     'embeddings' => $embeddings
+        // ]);
+
+        $response = Http::timeout(6000)->connectTimeout(6000)->attach(
+            'file',
+            $request->file('document')->getContent(),
+            $request->file('document')->getClientOriginalName()
+        )->post('http://127.0.0.1:8080/api/lab/test/rag/file/chat/v2/', [
+            'query' => $request->input('query')
+        ]);
+
+
+        return Inertia::render('testbed/file-vectorize', [
+            // 'embeddings' => $embeddings
+            'response' => $response->json()
+        ]);
+    }
+
     public function fastapi_vectorize(Request $request)
     {
         $response = Http::attach(

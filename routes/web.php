@@ -57,6 +57,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // ping
     Route::get('/ping/test', [ChatroomController::class, 'ping'])->name('ping.text');
     Route::post('/ping/test/message', [ChatroomController::class, 'ping_fastapi'])->name('ping.fastapi');
+
+    // testbed
+    Route::get('/testbed/file-vectorize',[DocumentController::class, 'fastapi_vectorize_test'])->name('testbed.file_vectorize');
+    Route::post('/testbed/vectorize', [DocumentController::class, 'vectorize_test'])->name('testbed.vectorize');
 });
 
 

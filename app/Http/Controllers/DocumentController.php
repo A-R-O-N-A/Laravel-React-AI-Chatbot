@@ -58,7 +58,8 @@ class DocumentController extends Controller
             'file',
             $request->file('document')->getContent(),
             $request->file('document')->getClientOriginalName()
-        )->post('http://127.0.0.1:8080/api/lab/test/rag/file/chat/v2/', [
+        // )->post('http://127.0.0.1:8080/api/lab/test/rag/file/chat/v2/', [
+        )->post('http://72.62.69.183:8002/api/lab/test/rag/file/chat/v2/', [
             'query' => $request->input('query')
         ]);
 
@@ -75,7 +76,8 @@ class DocumentController extends Controller
             'file',
             $request->file('document')->getContent(),
             $request->file('document')->getClientOriginalName()
-        )->post('http://127.0.0.1:8080/api/lab/test/rag/file/vectorize/');
+        // )->post('http://127.0.0.1:8080/api/lab/test/rag/file/vectorize/');
+        )->post('http://72.62.69.183:8002/api/lab/test/rag/file/vectorize/');
 
         // dd($response->json()['embeddings']);
 

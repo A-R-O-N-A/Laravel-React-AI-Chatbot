@@ -54,6 +54,8 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'message' => fn() => $request->session()->get('message'),
                 'results' => fn() => $request->session()->get('results'),
+
+                'ocr_result' => fn() => $request->session()->get('ocr_result'),
             ],
 
             'ziggy' => fn(): array => [

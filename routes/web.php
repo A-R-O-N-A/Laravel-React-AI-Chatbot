@@ -61,6 +61,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // testbed
     Route::get('/testbed/file-vectorize',[DocumentController::class, 'fastapi_vectorize_test'])->name('testbed.file_vectorize');
     Route::post('/testbed/vectorize', [DocumentController::class, 'vectorize_test'])->name('testbed.vectorize');
+
+    // OCR processing basic
+    Route::post('/ocr/process-image', [MessageController::class, 'image_ocr'])->name('ocr.process_image');
 });
 
 

@@ -10,6 +10,7 @@ import { Button } from './ui/button';
 import SidebarChatrooms from './chatroom_custom/sidebar-chartooms';
 import SidebarAddChatroom from './chatroom_custom/sidebar-add-chatroom';
 import FileUpload from './chatroom_custom/file-upload';
+import ImageOCR from './chatroom_custom/image-ocr';
 
 const handleSubmit = (post: any, setOpen: any, setData: any) => {
     console.log('data submitting : ')
@@ -40,6 +41,10 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
                 {/* file upload button */}
 
                 <FileUpload />
+
+                {/* image OCR */}
+
+                <ImageOCR/>
 
                 {/* list down the chatrooms */}
 

@@ -95,7 +95,7 @@ class MessageController extends Controller
         // $response = Http::post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama', [
         // $response = Http::timeout(6000)->connectTimeout(6000)->post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama/bm25', [
         $response = Http::timeout(6000)->connectTimeout(6000)->post('http://72.62.69.183:8002/api/lab/test/rag/chat/ollama/bm25', [
-        // $response = Http::timeout(6000)->connectTimeout(6000)->post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama', [
+            // $response = Http::timeout(6000)->connectTimeout(6000)->post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama', [
 
             "messages" => $fastapi_messages,
             "embeddings" => $embeddings,
@@ -135,9 +135,9 @@ class MessageController extends Controller
 
         return redirect()->back()->with([
             'message' => 'Conversation updated successfully.',
-            'results' => $results ,
+            'results' => $results,
         ]);
-    }   
+    }
 
     public function send_ai_message(Request $request)
     {
@@ -184,5 +184,49 @@ class MessageController extends Controller
         ]);
 
         dd($response->all());
+    }
+
+    public function image_ocr(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|file|image|max:10240',
+        ]);
+
+        try {
+            $image = $request->file('image');
+
+            $response = Http::timeout(6000)
+                ->connectTimeout(6000)
+                ->attach(
+                    'image',
+                    file_get_contents($image->getRealPath()),
+                    $image->getClientOriginalName()
+                )
+                ->post('http://72.62.69.183:8002/api/ocr/process-image/');
+
+            Log::info('OCR Response:', [
+                'status' => $response->status(),
+                'body' => $response->json()
+            ]);
+
+            
+            if ($response->successful()) {
+                $ocrData = $response->json()['text'] ?? 'No text extracted';
+                
+                // dd($response->json()['text']);
+                return back()->with([
+                    // 'message' => 'OCR processed successfully',
+                    'message' => $ocrData,
+                    'ocr_result' => $ocrData,
+                    ]);
+                }
+
+            return back()->withErrors([
+                'error' => 'OCR processing failed: ' . ($response->json()['detail'] ?? $response->body())
+            ]);
+        } catch (\Exception $e) {
+            Log::error('OCR Error: ' . $e->getMessage());
+            return back()->withErrors(['error' => 'Failed to process image: ' . $e->getMessage()]);
+        }
     }
 }

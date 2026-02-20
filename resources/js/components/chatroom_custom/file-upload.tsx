@@ -27,7 +27,7 @@ export default function FileUpload() {
     const handleFileUpload = () => {
         console.log('trigger upload button')
         // post(route('rag.file_upload'))
-        // post(route('documents.store'))
+        post(route('documents.store'))
     }
 
     return (<>

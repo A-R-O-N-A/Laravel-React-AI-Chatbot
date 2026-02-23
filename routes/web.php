@@ -63,6 +63,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/testbed/vectorize', [DocumentController::class, 'vectorize_test'])->name('testbed.vectorize');
 
     // OCR processing basic
+    Route::get('/ocr', [MessageController::class, 'ocr_page'])->name('ocr.page');
     Route::post('/ocr/process-image', [MessageController::class, 'image_ocr'])->name('ocr.process_image');
 });
 

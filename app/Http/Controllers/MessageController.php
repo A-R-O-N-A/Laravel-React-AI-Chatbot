@@ -9,6 +9,7 @@ use Illuminate\Routing\Exceptions\StreamedResponseException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 use Prism\Prism\Enums\Provider;
 use Prism\Prism\Prism;
 use Prism\Prism\ValueObjects\Messages\AssistantMessage;
@@ -184,6 +185,10 @@ class MessageController extends Controller
         ]);
 
         dd($response->all());
+    }
+
+    public function ocr_page() {
+        return Inertia::render('chatrooms/OCRPage');
     }
 
     public function image_ocr(Request $request)

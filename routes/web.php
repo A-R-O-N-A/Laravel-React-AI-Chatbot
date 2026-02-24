@@ -65,6 +65,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // OCR processing basic
     Route::get('/ocr', [MessageController::class, 'ocr_page'])->name('ocr.page');
     Route::post('/ocr/process-image', [MessageController::class, 'image_ocr'])->name('ocr.process_image');
+
+    // Data Analytics and Visualization
+    Route::get('/data-analytics', [MessageController::class, 'data_analytics_page'])->name('data_analytics.page');
+    Route::post('/data-analytics/analyze', [MessageController::class, 'data_analytics'])->name('data_analytics.analyze');
 });
 
 

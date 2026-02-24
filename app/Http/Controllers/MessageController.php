@@ -236,4 +236,55 @@ class MessageController extends Controller
             return back()->withErrors(['error' => 'Failed to process image: ' . $e->getMessage()]);
         }
     }
+
+    public function data_analytics_page() {
+        return Inertia::render('chatrooms/DataAnalyticsPage');
+    }
+
+    public function data_analytics(Request $request){
+
+        $request->validate([
+            'dataset' => 'required|file|mimes:csv'
+        ]);
+
+        try {
+
+            $dataset = $request->file('dataset');
+
+            $response = Http::timeout(60000)
+                ->connectTimeout(6000)
+                ->attach(
+                    'dataset',
+                    file_get_contents($dataset->getRealPath()),
+                    $dataset->getClientOriginalName()              
+                )
+                ->post('http://127.0.0.1:8080/api/data-analytics/data-analytics/analyze');
+            
+            // Log::info()('Data Analytics Response:', [
+            //     'status' => $response->status(),
+            //     'body' => $response->json()
+            // ]);
+
+            // dd($response->json());
+
+            if ($response->successful()) {
+                $analyticsResult = $response->json()['data_parsed'];
+
+                return back()->with([
+                    'message'  => 'Data analytics completed successfully',
+                    'analytics_result' => $analyticsResult,
+                ]);
+            } else {
+                return back()->withErrors([
+                    'error' => 'Data analytics failed : ' . ($response->json()['detail'] ?? $response->body())
+                ]);
+            }
+
+
+        } catch (\Exception $e) {
+            Log::error('Data Analytics Error: ' . $e->getMessage());
+            return back()->withErrors(['error' => 'Failed to process file: ' . $e->getMessage()]);
+        }
+
+    }
 }

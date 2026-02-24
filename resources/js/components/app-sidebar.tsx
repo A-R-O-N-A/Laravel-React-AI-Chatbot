@@ -61,7 +61,7 @@ export function AppSidebar() {
                                     className='h-20 dark:filter  invert dark:invert-0' 
                                     />
                                     {/* <span className='ml-2'>Millennium AI</span> */}
-                                    <span className='ml-2 text-2xl font-bold'>Siel AI</span>
+                                    <span className='ml-2 text-2xl font-bold'>SIEL AI</span>
                                 </Link>
                                 {/* </span> */}
                         </SidebarMenuButton>

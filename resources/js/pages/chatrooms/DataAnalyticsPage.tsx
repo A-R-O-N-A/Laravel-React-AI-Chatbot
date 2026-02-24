@@ -57,7 +57,7 @@ export default function DataAnalyticsPage() {
         <AppLayout>
             <Head title="Data Analytics" />
 
-            <div className="container mx-auto py-8 px-4 max-w-4xl">
+            <div className="container mx-auto py-8 px-4 max-w-8xl">
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold tracking-tight">Data Analytics</h1>
                     <p className="text-muted-foreground mt-2">
@@ -108,19 +108,18 @@ export default function DataAnalyticsPage() {
 
                     {/* data visualization using plotly here  */}
 
-                    <Plot
-
-                        data={plotlyTraces}
-
-                        layout={{
-                            title: {
-                                text: 'Siel AI Data Analytics API'
-                            },
-                            autosize: true,
-                        }}
-                        useResizeHandler={true}
-                        style={{ width: '100%', height: '600px' }}
-                    />
+                    {/* <div className="w-full aspect-square"> */}
+                    <div className="max-w-4xl mx-auto aspect-square">
+                        <Plot
+                            data={plotlyTraces}
+                            layout={{
+                                title: { text: "Siel AI Data Analytics API" },
+                                autosize: true,
+                            }}
+                            useResizeHandler={true}
+                            style={{ width: "100%", height: "85%" }}
+                        />
+                    </div>
 
                     {/* descriptive statistics */}
 
@@ -129,7 +128,7 @@ export default function DataAnalyticsPage() {
                     />
 
                     {/* make the AI interpretation reportt in her, use markdown parser */}
-                                        {/* make the AI interpretation report in here, use markdown parser */}
+                    {/* make the AI interpretation report in here, use markdown parser */}
                     {AIInterpretation && (
                         <Card>
                             <CardHeader>

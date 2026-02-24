@@ -33,9 +33,12 @@ export default function Dashboard() {
                             <div className="flex justify-center">
 
                                 <img
-                                    src='/millennium_logo_svg.svg'
-                                    alt='Millennium AI'
-                                    className='h-20 dark:filter dark:brightness-0 dark:invert' 
+                                    // src='/millennium_logo_svg.svg'
+                                    src='/CLSU_MONOCHROME.png'
+                                    // alt='illennium AI'
+                                    alt='Siel AI'
+                                    // className='h-40 dark:filter dark:brightness-0 dark:invert' 
+                                    className='h-40 dark:filter invert dark:invert-0' 
                                     />                        
                             </div>
 
@@ -47,10 +50,12 @@ export default function Dashboard() {
                                     Powered by Llama 3.2
                                 </Badge>
                                 <h1 className="text-4xl font-bold tracking-tight">
-                                    Welcome to Millennium AI
+                                    {/* Welcome to Millennium AI */}
+                                    Welcome to Siel AI
                                 </h1>
                                 <p className="text-xl text-muted-foreground max-w-lg mx-auto">
-                                    Your intelligent conversation partner. Start chatting to get help with anything you need.
+                                    {/* Your intelligent conversation partner. Start chatting to get help with anything you need. */}
+                                    Powered by RAG
                                 </p>
                             </div>
                         </div>

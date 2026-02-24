@@ -22,7 +22,8 @@ export default function Welcome() {
                                 <div>
                                     <h1 className="mb-2 text-2xl font-semibold flex items-center gap-2 text-[#1b1b18] dark:text-[#EDEDEC]">
                                         <Brain className="h-6 w-6" />
-                                        Millennium AI Chatbot
+                                        {/* Millennium AI Chatbot */}
+                                        Siel AI
                                     </h1>
                                     <p className="text-[#706f6c] dark:text-[#A1A09A]">
                                         Meet your new AI assistant - designed to understand, assist, and engage in meaningful conversations.
@@ -61,9 +62,15 @@ export default function Welcome() {
                         {/* Millennium logo */}
                         <div className="relative -mb-px aspect-[335/376] w-full shrink-0 overflow-hidden rounded-t-lg bg-white lg:mb-0 lg:-ml-px lg:aspect-auto lg:w-[438px] lg:rounded-t-none lg:rounded-r-lg dark:bg-[#161615]">
                             <img
-                                src="/millennium_logo_svg.svg"
-                                alt="Millennium Logo"
-                                className="h-50 absolute inset-0 m-auto object-contain dark:invert"
+
+                                src="/CLSU_MONOCHROME.png"
+                                alt="Siel AI"
+
+                                // src="/millennium_logo_svg.svg"
+                                // alt="Millennium Logo"
+
+                                // className="h-50 absolute inset-0 m-auto object-contain dark:invert"
+                                className="h-50 absolute inset-0 m-auto object-contain invert dark:invert-0"
                             />
                             <div className="absolute inset-0 rounded-t-lg shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] lg:rounded-t-none lg:rounded-r-lg dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d]" />
                         </div>

@@ -18,8 +18,9 @@ export default function AuthSplitLayout({ children, title, description }: PropsW
                 <Link href={route('home')} className="relative z-20 flex items-center text-lg font-medium">
                     {/* <AppLogoIcon className="mr-2 size-8 fill-current text-white" /> */}
                     {/* {name} */}
-                    <img src="/millennium_logo_svg.svg" alt="" className='h-10 brightness-0 invert dark:brightness-100 ' />                
-                    <div className="ml-5">Millennium AI</div>
+                    {/* <img src="/millennium_logo_svg.svg" alt="" className='h-10 brightness-0 invert dark:brightness-100 ' />                 */}
+                    <img src="/CLSU_MONOCHROME.png" alt="Siel AI" className='h-20 dark:filter  dark:invert-0' />                
+                    <div className="ml-5 text-2xl font-bold">Siel AI</div>
                 </Link>
                 {quote && (
                     <div className="relative z-20 mt-auto">

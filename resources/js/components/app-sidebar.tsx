@@ -50,15 +50,18 @@ export function AppSidebar() {
                 <SidebarMenu>
 
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
+                        <SidebarMenuButton size="xl" asChild>
+                        {/* <SidebarMenuButton size="lg" asChild> */}
                                 {/* <span className="justify-start"> */}
                                 <Link href='/dashboard'>
                                 <img
-                                    src='/millennium_logo_svg.svg'
+                                    // src='/millennium_logo_svg.svg'
+                                    src='/CLSU_MONOCHROME.png'
                                     alt='Millennium AI'
-                                    className='h-10 dark:filter dark:brightness-0 dark:invert' 
+                                    className='h-20 dark:filter  invert dark:invert-0' 
                                     />
-                                    <span className='ml-2'>Millennium AI</span>
+                                    {/* <span className='ml-2'>Millennium AI</span> */}
+                                    <span className='ml-2 text-2xl font-bold'>Siel AI</span>
                                 </Link>
                                 {/* </span> */}
                         </SidebarMenuButton>

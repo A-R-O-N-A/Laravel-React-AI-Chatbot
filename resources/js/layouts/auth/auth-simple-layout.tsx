@@ -17,7 +17,8 @@ export default function AuthSimpleLayout({ children, title, description }: Props
                         <Link href={route('home')} className="flex flex-col items-center gap-2 font-medium">
                             <div className="mb-1 flex h-9 w-9 items-center justify-center rounded-md">
                                 {/* <AppLogoIcon className="size-9 fill-current text-[var(--foreground)] dark:text-white" /> */}
-                                <img src="/millennium_logo_svg.svg" alt="" className='h-50 dark:invert' />
+                                {/* <img src="/millennium_logo_svg.svg" alt="" className='h-50 dark:invert' /> */}
+                                <img src="/CLSU_MONOCHROME.png" alt="Siel AI" className='h-50 invert dark:invert-0' />
                             </div>
                             <span className="sr-only">{title}</span>
                         </Link>

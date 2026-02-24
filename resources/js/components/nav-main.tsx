@@ -2,7 +2,7 @@ import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, Sideba
 import { type NavItem } from '@/types';
 import { Link, usePage, useForm } from '@inertiajs/react';
 import { useState } from 'react';
-import { SquarePen } from 'lucide-react';
+import { ImageIcon, SquarePen } from 'lucide-react';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { Label } from './ui/label';
 import { Input } from './ui/input';
@@ -40,11 +40,19 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
 
                 {/* file upload button */}
 
-                <FileUpload />
+                {/* <FileUpload /> */}
+                <Link href={route('ocr.page')}>
+
+                    <Button
+                        variant="ghost" size="sm" className="w-full justify-start text-sm">
+                        <ImageIcon />
+                        Image OCR
+                    </Button>
+
+                </Link>
 
                 {/* image OCR */}
-
-                <ImageOCR/>
+                {/* <ImageOCR /> */}
 
                 {/* list down the chatrooms */}
 

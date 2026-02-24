@@ -56,6 +56,7 @@ class HandleInertiaRequests extends Middleware
                 'results' => fn() => $request->session()->get('results'),
 
                 'ocr_result' => fn() => $request->session()->get('ocr_result'),
+                'model_used' => fn() => $request->session()->get('model_used'),
             ],
 
             'ziggy' => fn(): array => [

@@ -217,12 +217,14 @@ class MessageController extends Controller
             
             if ($response->successful()) {
                 $ocrData = $response->json()['text'] ?? 'No text extracted';
+                $modelUsed = $response->json()['model'] ?? 'Unknown model';
                 
                 // dd($response->json()['text']);
                 return back()->with([
                     // 'message' => 'OCR processed successfully',
                     'message' => $ocrData,
                     'ocr_result' => $ocrData,
+                    'model_used' => $modelUsed,
                     ]);
                 }
 

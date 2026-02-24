@@ -6,12 +6,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 import { ImageIcon, Upload, X, Download } from "lucide-react";
-import { Document, Packer, Paragraph, TextRun } from "docx";
 import { saveAs } from "file-saver";
+
+import { convertMarkdownToDocx, downloadDocx } from '@mohtasham/md-to-docx'
+
 
 export default function OCRPage() {
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [response, setResponse] = useState<any>(null);
+    const [modelUsed, setModelUsed] = useState<string>('')
 
     const { post, processing, data, setData, reset } = useForm({
         image: null as File | null,
@@ -23,6 +26,7 @@ export default function OCRPage() {
             onSuccess: (page) => {
                 console.log('OCR Result:', page.props.flash.ocr_result);
                 setResponse(page.props.flash.ocr_result);
+                setModelUsed(page.props.flash.model_used)
             },
             onError: (errors) => {
                 console.error('Upload failed:', errors);
@@ -36,70 +40,11 @@ export default function OCRPage() {
         reset();
     };
 
-    const handleDownloadDocx = async () => {
-        if (!response) return;
+    const handleDownloadMarkdownDocx = async () => {
+        const markdown = String(response);
 
-        const text = String(response);
-        const lines = text.split('\n');
+        const blob = await convertMarkdownToDocx(markdown);
 
-        const paragraphs = lines.map((line) => {
-            const trimmedLine = line.trim();
-
-            // Detect headers (lines that are short, ALL CAPS, or end with colon)
-            const isHeader =
-                trimmedLine.length > 0 &&
-                trimmedLine.length < 60 &&
-                (trimmedLine === trimmedLine.toUpperCase() || trimmedLine.endsWith(':'));
-
-            // Empty line = spacing
-            if (trimmedLine.length === 0) {
-                return new Paragraph({
-                    text: "",
-                    spacing: {
-                        after: 200,
-                    },
-                });
-            }
-
-            // Header formatting
-            if (isHeader) {
-                return new Paragraph({
-                    children: [
-                        new TextRun({
-                            text: trimmedLine,
-                            bold: true,
-                            size: 28, // 14pt
-                        })
-                    ],
-                    spacing: {
-                        before: 240,
-                        after: 120,
-                    },
-                });
-            }
-
-            // Regular paragraph
-            return new Paragraph({
-                children: [
-                    new TextRun({
-                        text: line,
-                        size: 24, // 12pt
-                    })
-                ],
-                spacing: {
-                    after: 120,
-                },
-            });
-        });
-
-        const doc = new Document({
-            sections: [{
-                properties: {},
-                children: paragraphs,
-            }],
-        });
-
-        const blob = await Packer.toBlob(doc);
         saveAs(blob, `ocr-result-${new Date().getTime()}.docx`);
     };
 
@@ -204,7 +149,8 @@ export default function OCRPage() {
                                     <Button
                                         variant="outline"
                                         size="sm"
-                                        onClick={handleDownloadDocx}
+                                        // onClick={handleDownloadDocx}
+                                        onClick={handleDownloadMarkdownDocx}
                                     >
                                         <Download className="h-4 w-4 mr-2" />
                                         Download DOCX
@@ -213,6 +159,9 @@ export default function OCRPage() {
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 <div className="rounded-lg border bg-muted/50 p-4">
+                                    <p className="text-xs text-muted-foreground mt-2 mb-2">
+                                        Model used: {modelUsed}
+                                    </p>
                                     <p className="text-sm whitespace-pre-wrap">
                                         {response || 'No text extracted'}
                                     </p>

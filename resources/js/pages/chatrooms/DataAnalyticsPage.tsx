@@ -70,6 +70,17 @@ export default function DataAnalyticsPage() {
         [plotlyTraces, selectedPlotType]
     );
 
+    // dynamic axis labels from backend trace metadata
+    const axisTitles = useMemo(() => {
+        const first = plotlyTraces?.[0] || {};
+        return {
+            x: first.x_col || "X Axis",
+            y: first.y_col || "Y Axis",
+            z: first.z_col || "Z Axis",
+        };
+    }, [plotlyTraces]);
+
+
     const handleAnalyze = () => {
         post(route('data_analytics.analyze'), {
             onSuccess: (page) => {
@@ -203,7 +214,7 @@ export default function DataAnalyticsPage() {
                         <Tabs
                             value={selectedPlotType}
                             onValueChange={setSelectedPlotType}
-                            className='max-w-4xl mx-auto w-full'
+                            className='max-w-5xl mx-auto w-full'
                         >
                             <TabsList className="grid w-full grid-cols-5">
                                 {plotTypes.map((type => (
@@ -215,15 +226,33 @@ export default function DataAnalyticsPage() {
                         </Tabs>
                     )}
 
-                    <div className="max-w-5xl mx-auto h-[calc(100vh-220px)] min-h-[500px]">
+                    <div className="max-w-8xl mx-auto h-[calc(100vh-220px)] min-h-[500px]">
                         <Plot
                             data={shapedPlotlyTraces}
                             layout={{
                                 title: { text: "Siel AI Data Analytics API" },
                                 autosize: true,
+                                ...(selectedPlotType === "scatter3d"
+                                    ? {
+                                        scene: {
+                                            xaxis: { title: { text: axisTitles.x } },
+                                            yaxis: { title: { text: axisTitles.y } },
+                                            zaxis: { title: { text: axisTitles.z } },
+                                            aspectmode: "cube",              // key fix
+                                            aspectratio: { x: 1, y: 1, z: 1 } // square-ish/cubic
+                                        },
+                                        margin: { l: 0, r: 0, t: 40, b: 0 }
+                                    }
+                                    : {
+                                        xaxis: { title: { text: axisTitles.x } },
+                                        yaxis: { title: { text: axisTitles.y } },
+                                    }),
+                                bargap: 0.05,
+                                bargroupgap: 0.05,
                             }}
                             useResizeHandler={true}
-                            style={{ width: "100%", height: "100%" }}
+                            // style={{ width: "100%", height: "100%" }}
+                            style={{ width: "1000px", height: "800px" }}
                         />
                     </div>
 

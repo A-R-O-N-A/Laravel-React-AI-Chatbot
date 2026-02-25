@@ -115,7 +115,7 @@ export default function DataAnalyticsPage() {
             <Head title="Data Analytics" />
 
             <div className="container mx-auto  max-w-8xl">
-            {/* <div className="container mx-auto py-8 px-10 lg:px-16 max-w-8xl"> */}
+                {/* <div className="container mx-auto py-8 px-10 lg:px-16 max-w-8xl"> */}
 
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold tracking-tight">Data Analytics</h1>
@@ -189,22 +189,26 @@ export default function DataAnalyticsPage() {
                                 autosize: true,
                                 ...(selectedPlotType === "scatter3d"
                                     ? {
-                                          scene: {
-                                              xaxis: { title: { text: axisTitles.x } },
-                                              yaxis: { title: { text: axisTitles.y } },
-                                              zaxis: { title: { text: axisTitles.z } },
-                                              aspectmode: "cube",
-                                              aspectratio: { x: 1, y: 1, z: 1 },
-                                          },
-                                          margin: { l: 0, r: 0, t: 40, b: 0 },
-                                      }
+                                        scene: {
+                                            xaxis: { title: { text: axisTitles.x } },
+                                            yaxis: { title: { text: axisTitles.y } },
+                                            zaxis: { title: { text: axisTitles.z } },
+                                            aspectmode: "cube",
+                                            aspectratio: { x: 1, y: 1, z: 1 },
+                                        },
+                                        margin: { l: 0, r: 0, t: 40, b: 0 },
+                                    }
                                     : {
-                                          xaxis: { title: { text: axisTitles.x } },
-                                          yaxis: { title: { text: axisTitles.y } },
+                                        xaxis: {
+                                            title: { text: axisTitles.x },
+                                        },
+                                        yaxis: {
+                                            title: { text: selectedPlotType === "histogram" ? "frequence" : axisTitles.y },
+                                        },
                                         margin: { l: 60, r: 30, t: 40, b: 60 },
-                                      }),
-                                bargap: 0.05,
-                                bargroupgap: 0.05,
+                                    }),
+                                bargap: 0.01,
+                                bargroupgap: 0.01,
                             }}
                             useResizeHandler={true}
                             style={{ width: "100%", height: "100%" }}

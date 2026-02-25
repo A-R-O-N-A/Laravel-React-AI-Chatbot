@@ -1,6 +1,6 @@
 import AppLayout from "@/layouts/app-layout";
 import { Head, useForm } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,29 @@ import Plot from 'react-plotly.js';
 import DescriptiveStatsTable from "@/components/plotly_utils/ui_utils";
 import ReactMarkdown from "react-markdown";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+function applyType(trace: any, selectedPlotType: string) {
+    const next = { ...trace, type: selectedPlotType };
+
+    if (selectedPlotType === "scatter") {
+        // keep x and y
+        return next;
+    }
+
+    if (selectedPlotType === "box" || selectedPlotType === "violin") {
+        // y only
+        delete next.x;
+        return next;
+    }
+
+    if (selectedPlotType === "histogram") {
+        // x only
+        delete next.y;
+        return next;
+    }
+
+    return next;
+}
 
 
 export default function DataAnalyticsPage() {
@@ -25,6 +48,11 @@ export default function DataAnalyticsPage() {
     const [plotTypes, setPlotTypes] = useState<string[]>([])
     const [defaultPlotType, setDefaultPlotType] = useState<string>('')
     const [selectedPlotType, setSelectedPlotType] = useState<string>('')
+
+    const shapedPlotlyTraces = useMemo(
+        () => plotlyTraces.map((trace) => applyType(trace, selectedPlotType)),
+        [plotlyTraces, selectedPlotType]
+    );
 
     const handleAnalyze = () => {
         post(route('data_analytics.analyze'), {
@@ -174,7 +202,8 @@ export default function DataAnalyticsPage() {
                     {/* <div className="w-full aspect-square"> */}
                     <div className="max-w-4xl mx-auto aspect-square">
                         <Plot
-                            data={plotlyTraces}
+                            // data={plotlyTraces}
+                            data={shapedPlotlyTraces}
                             layout={{
                                 title: { text: "Siel AI Data Analytics API" },
                                 autosize: true,

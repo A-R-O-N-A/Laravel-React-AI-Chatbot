@@ -15,19 +15,35 @@ function applyType(trace: any, selectedPlotType: string) {
     const next = { ...trace, type: selectedPlotType };
 
     if (selectedPlotType === "scatter") {
-        // keep x and y
+        // 2D scatter: x + y only
+        delete next.z;
+        return next;
+    }
+
+    if (selectedPlotType === "scatter3d") {
+        // 3D scatter: x + y + z
+        if (!Array.isArray(next.z)) {
+            // fallback if z is missing
+            if (Array.isArray(next.y)) {
+                next.z = next.y.map((_: any, i: number) => i);
+            } else {
+                next.z = [];
+            }
+        }
         return next;
     }
 
     if (selectedPlotType === "box" || selectedPlotType === "violin") {
         // y only
         delete next.x;
+        delete next.z;
         return next;
     }
 
     if (selectedPlotType === "histogram") {
         // x only
         delete next.y;
+        delete next.z;
         return next;
     }
 
@@ -43,7 +59,7 @@ export default function DataAnalyticsPage() {
     const [analyticsResult, setAnalyticsResult] = useState<any>(null);
     const [descriptiveStats, setDescriptiveStats] = useState<any>({})
     const [AIInterpretation, setAIInterpretation] = useState<string>('')
-    
+
     const [plotlyTraces, setPlotlyTraces] = useState<any[]>([])
     const [plotTypes, setPlotTypes] = useState<string[]>([])
     const [defaultPlotType, setDefaultPlotType] = useState<string>('')
@@ -108,7 +124,7 @@ export default function DataAnalyticsPage() {
     useEffect(() => {
 
         // set the traces  ...
-        setPlotlyTraces((prev) => 
+        setPlotlyTraces((prev) =>
 
             // for each trace.....
             prev.map((trace) => ({
@@ -184,12 +200,12 @@ export default function DataAnalyticsPage() {
 
                     {/* control for changing plot type */}
                     {plotTypes.length > 0 && (
-                        <Tabs 
+                        <Tabs
                             value={selectedPlotType}
                             onValueChange={setSelectedPlotType}
                             className='max-w-4xl mx-auto w-full'
                         >
-                            <TabsList className="grid w-full grid-cols-4">
+                            <TabsList className="grid w-full grid-cols-5">
                                 {plotTypes.map((type => (
                                     <TabsTrigger key={type} value={type} className='capitalize'>
                                         {type}
@@ -199,17 +215,15 @@ export default function DataAnalyticsPage() {
                         </Tabs>
                     )}
 
-                    {/* <div className="w-full aspect-square"> */}
-                    <div className="max-w-4xl mx-auto aspect-square">
+                    <div className="max-w-5xl mx-auto h-[calc(100vh-220px)] min-h-[500px]">
                         <Plot
-                            // data={plotlyTraces}
                             data={shapedPlotlyTraces}
                             layout={{
                                 title: { text: "Siel AI Data Analytics API" },
                                 autosize: true,
                             }}
                             useResizeHandler={true}
-                            style={{ width: "100%", height: "85%" }}
+                            style={{ width: "100%", height: "100%" }}
                         />
                     </div>
 

@@ -16,6 +16,8 @@ use Prism\Prism\ValueObjects\Messages\AssistantMessage;
 use Prism\Prism\ValueObjects\Messages\UserMessage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
+use App\Http\SIELAI\Routes\General;
+
 class MessageController extends Controller
 {
 
@@ -46,6 +48,8 @@ class MessageController extends Controller
 
     public function sent_ai_message_fastapi(Request $request)
     {
+        $sielai = new General();
+
         // ini_set('max_execution_time', 0); // Allow up to 10 minutes
         ini_set('max_execution_time', 3600);
         set_time_limit(3600);
@@ -92,34 +96,13 @@ class MessageController extends Controller
         // dd($documentContent);
 
         // get responst with message history
-        // $response = Http::post('http://127.0.0.1:8080/api/lab/test/array', [
-        // $response = Http::post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama', [
-        // $response = Http::timeout(6000)->connectTimeout(6000)->post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama/bm25', [
-        $response = Http::timeout(6000)->connectTimeout(6000)->post('http://72.62.69.183:8002/api/lab/test/rag/chat/ollama/bm25', [
-
-
-            // $response = Http::timeout(6000)->connectTimeout(6000)->post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama', [
-
+        $response = Http::timeout(6000)
+            ->connectTimeout(6000)
+            ->post($sielai->ragChatBm25 ,[
             "messages" => $fastapi_messages,
             "embeddings" => $embeddings,
             "documents" => $documentContent,
         ]);
-
-        // dd($response->json());
-
-        // if (isset($response->json()['content'])) {
-        //     $fastapi_ai_response = $response->json()['content'];
-        // } else {
-        //     Log::error('FastAPI response error: ' . $response->body());
-        //     return redirect()->back()->with('message', $response->json()['error'] ?? 'Unknown error from AI service.');
-        // }
-
-        // extract contante
-        // $fastapi_ai_response = $response->json()['content'];
-
-        // dd($response->json());
-
-        // dd($response->json());
 
         $results = $response->json()['results'] ?? [];
 
@@ -133,8 +116,6 @@ class MessageController extends Controller
             'vector_results' => json_encode($results),
             // 'vector_results' => $results,
         ]);
-
-        // return redirect()->back()->with('message', 'Conversation updated successfully.');
 
         return redirect()->back()->with([
             'message' => 'Conversation updated successfully.',

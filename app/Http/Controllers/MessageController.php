@@ -160,10 +160,11 @@ class MessageController extends Controller
 
     public function rag_file_upload(Request $request)
     {
+        $sielai = new General();
         // handle file upload for RAG 
         // dd($request->all());
 
-        $response = Http::post('http://72.62.69.183:8002/api/lab/test/rag/file/vectorize/', [
+        $response = Http::post($sielai->ragFileVectorize, [
             "file" => $request->file('file')
         ]);
 
@@ -176,6 +177,8 @@ class MessageController extends Controller
 
     public function image_ocr(Request $request)
     {
+        $sielai = new General();
+
         $request->validate([
             'image' => 'required|file|image|max:10240',
         ]);
@@ -190,7 +193,7 @@ class MessageController extends Controller
                     file_get_contents($image->getRealPath()),
                     $image->getClientOriginalName()
                 )
-                ->post('http://72.62.69.183:8002/api/ocr/process-image/');
+                ->post($sielai->ocrProcessImage);
 
             Log::info('OCR Response:', [
                 'status' => $response->status(),
@@ -202,9 +205,7 @@ class MessageController extends Controller
                 $ocrData = $response->json()['text'] ?? 'No text extracted';
                 $modelUsed = $response->json()['model'] ?? 'Unknown model';
                 
-                // dd($response->json()['text']);
                 return back()->with([
-                    // 'message' => 'OCR processed successfully',
                     'message' => $ocrData,
                     'ocr_result' => $ocrData,
                     'model_used' => $modelUsed,

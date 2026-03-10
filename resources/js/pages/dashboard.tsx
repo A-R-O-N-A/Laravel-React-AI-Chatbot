@@ -47,7 +47,7 @@ export default function Dashboard() {
                             <div className="space-y-2">
                                 <Badge variant="secondary" className="mb-4">
                                     <Sparkles className="h-3 w-3 mr-1" />
-                                    Powered by Llama 3.2
+                                    Powered by Google Gemini
                                 </Badge>
                                 <h1 className="text-4xl font-bold tracking-tight">
                                     {/* Welcome to Millennium AI */}
@@ -55,7 +55,6 @@ export default function Dashboard() {
                                 </h1>
                                 <p className="text-xl text-muted-foreground max-w-lg mx-auto">
                                     {/* Your intelligent conversation partner. Start chatting to get help with anything you need. */}
-                                    Powered by RAG
                                 </p>
                             </div>
                         </div>

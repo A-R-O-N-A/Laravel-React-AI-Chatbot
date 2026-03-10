@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Upload, FileSpreadsheet } from "lucide-react";
+import { Upload, FileSpreadsheet, Loader2 } from "lucide-react";
 import Plot from "react-plotly.js";
 import DescriptiveStatsTable from "@/components/plotly_utils/ui_utils";
 import ReactMarkdown from "react-markdown";
@@ -112,9 +112,9 @@ export default function DataAnalyticsPage() {
 
     return (
         <AppLayout>
-            <Head title="Data Analytics" />
+            <Head title="Data Analytics"/>
 
-            <div className="container mx-auto  max-w-8xl">
+            <div className="container mx-auto  max-w-8xl mt-8">
                 {/* <div className="container mx-auto py-8 px-10 lg:px-16 max-w-8xl"> */}
 
                 <div className="mb-8">
@@ -126,42 +126,47 @@ export default function DataAnalyticsPage() {
 
                 <div className="grid gap-6">
                     {/* Upload Card */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                                <FileSpreadsheet className="h-5 w-5" />
-                                Upload Dataset
-                            </CardTitle>
-                            <CardDescription>Select a CSV file to analyze</CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="space-y-2">
-                                <Label htmlFor="dataset">CSV File</Label>
+                    <div className="w-full max-w-8xl mx-auto rounded-lg border bg-background p-4">
+                        <div className="flex flex-col gap-3 md:flex-row md:items-end">
+                            <div className="flex-1 space-y-2">
+                                <Label htmlFor="dataset" className="text-sm font-medium mb-4">
+                                    CSV File
+                                </Label>
                                 <Input
                                     id="dataset"
                                     name="dataset"
                                     type="file"
                                     accept=".csv"
+                                    className="h-10"
                                     onChange={(e) => {
                                         const file = e.target.files ? e.target.files[0] : null;
                                         setData("dataset", file);
                                     }}
                                 />
                                 {errors.dataset && (
-                                    <p className="text-sm text-red-500">{errors.dataset}</p>
+                                    <p className="text-xs text-red-500">{errors.dataset}</p>
                                 )}
                             </div>
 
                             <Button
                                 onClick={handleAnalyze}
                                 disabled={!data.dataset || processing}
-                                className="w-full"
+                                className="h-10 md:w-auto w-full px-6"
                             >
-                                <Upload className="h-4 w-4 mr-2" />
-                                {processing ? "Processing..." : "Analyze Dataset"}
+                                {processing ? (
+                                    <>
+                                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                        Analyzing...
+                                    </>
+                                ) : (
+                                    <>
+                                        <Upload className="h-4 w-4 mr-2" />
+                                        Analyze
+                                    </>
+                                )}
                             </Button>
-                        </CardContent>
-                    </Card>
+                        </div>
+                    </div>
 
                     {/* Plot type tabs */}
                     {plotTypes.length > 0 && (
@@ -181,45 +186,49 @@ export default function DataAnalyticsPage() {
                     )}
 
                     {/* Main plot */}
-                    <div className="w-full h-[calc(100vh-220px)] min-h-[500px]">
-                        <Plot
-                            data={shapedPlotlyTraces}
-                            layout={{
-                                title: { text: "Siel AI Data Analytics API" },
-                                autosize: true,
-                                ...(selectedPlotType === "scatter3d"
-                                    ? {
-                                        scene: {
-                                            xaxis: { title: { text: axisTitles.x } },
-                                            yaxis: { title: { text: axisTitles.y } },
-                                            zaxis: { title: { text: axisTitles.z } },
-                                            aspectmode: "cube",
-                                            aspectratio: { x: 1, y: 1, z: 1 },
-                                        },
-                                        margin: { l: 0, r: 0, t: 40, b: 0 },
-                                    }
-                                    : {
-                                        xaxis: {
-                                            title: { text: axisTitles.x },
-                                        },
-                                        yaxis: {
-                                            title: { text: selectedPlotType === "histogram" ? "frequence" : axisTitles.y },
-                                        },
-                                        margin: { l: 60, r: 30, t: 40, b: 60 },
-                                    }),
-                                bargap: 0.01,
-                                bargroupgap: 0.01,
-                            }}
-                            useResizeHandler={true}
-                            style={{ width: "100%", height: "100%" }}
-                        />
-                    </div>
 
-                    Parallel Coordinates Plot
+                    {analyticsResult && <>
+
+                        <div className="w-full h-[calc(100vh-220px)] min-h-[500px]">
+                            <Plot
+                                data={shapedPlotlyTraces}
+                                layout={{
+                                    title: { text: "Siel AI Data Analytics API" },
+                                    autosize: true,
+                                    ...(selectedPlotType === "scatter3d"
+                                        ? {
+                                            scene: {
+                                                xaxis: { title: { text: axisTitles.x } },
+                                                yaxis: { title: { text: axisTitles.y } },
+                                                zaxis: { title: { text: axisTitles.z } },
+                                                aspectmode: "cube",
+                                                aspectratio: { x: 1, y: 1, z: 1 },
+                                            },
+                                            margin: { l: 0, r: 0, t: 40, b: 0 },
+                                        }
+                                        : {
+                                            xaxis: {
+                                                title: { text: axisTitles.x },
+                                            },
+                                            yaxis: {
+                                                title: { text: selectedPlotType === "histogram" ? "frequence" : axisTitles.y },
+                                            },
+                                            margin: { l: 60, r: 30, t: 40, b: 60 },
+                                        }),
+                                    bargap: 0.01,
+                                    bargroupgap: 0.01,
+                                }}
+                                useResizeHandler={true}
+                                style={{ width: "100%", height: "100%" }}
+                            />
+                        </div>
+                    </>}
+
 
                     {/* Parallel Coordinates plot */}
                     {parallelCoordsConfig?.enabled && parallelCoordsConfig?.trace && (
                         <div className="w-full h-[calc(100vh-220px)] min-h-[500px]">
+                            Parallel Coordinates Plot
                             <Plot
                                 data={[parallelCoordsConfig.trace]}
                                 layout={{

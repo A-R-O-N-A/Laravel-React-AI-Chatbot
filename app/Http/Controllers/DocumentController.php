@@ -72,7 +72,17 @@ class DocumentController extends Controller
 
     public function fastapi_vectorize(Request $request)
     {
-        $response = Http::attach(
+
+        // $response = Http::attach(
+        //     'file',
+        //     $request->file('document')->getContent(),
+        //     $request->file('document')->getClientOriginalName()
+        // // )->post('http://127.0.0.1:8080/api/lab/test/rag/file/vectorize/');
+        // )->post('http://72.62.69.183:8002/api/lab/test/rag/file/vectorize/');
+
+        $response = Http::timeout(6000)
+            ->connectTimeout(6000)
+             ->attach(
             'file',
             $request->file('document')->getContent(),
             $request->file('document')->getClientOriginalName()
@@ -89,7 +99,7 @@ class DocumentController extends Controller
         // dd($request->all());
 
         $request->validate([
-            'document' => 'required|file|max:10240|mimes:pdf,txt,doc,docx,text/markdown',
+            'document' => 'required|file|max:102400|mimes:pdf,txt,doc,docx,text/markdown',
             'chatroom_id' => 'nullable|exists:chatrooms,id',
         ]);
 
@@ -119,7 +129,7 @@ class DocumentController extends Controller
 
         // add optional error message if needed
 
-        return back()->with('message', 'Document uploaded successfully.');
+        return redirect()->back()->with('message', 'Document uploaded successfully.');
     }
     public function getPDFPreview($docId)
     {

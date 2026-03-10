@@ -96,6 +96,8 @@ class MessageController extends Controller
         // $response = Http::post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama', [
         // $response = Http::timeout(6000)->connectTimeout(6000)->post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama/bm25', [
         $response = Http::timeout(6000)->connectTimeout(6000)->post('http://72.62.69.183:8002/api/lab/test/rag/chat/ollama/bm25', [
+
+
             // $response = Http::timeout(6000)->connectTimeout(6000)->post('http://127.0.0.1:8080/api/lab/test/rag/chat/ollama', [
 
             "messages" => $fastapi_messages,
@@ -258,7 +260,8 @@ class MessageController extends Controller
                     file_get_contents($dataset->getRealPath()),
                     $dataset->getClientOriginalName()              
                 )
-                ->post('http://127.0.0.1:8080/api/data-analytics/data-analytics/analyze');
+                // ->post('http://127.0.0.1:8080/api/data-analytics/data-analytics/analyze');
+                ->post('http://72.62.69.183:8002/api/data-analytics/data-analytics/analyze');
             
             // Log::info()('Data Analytics Response:', [
             //     'status' => $response->status(),

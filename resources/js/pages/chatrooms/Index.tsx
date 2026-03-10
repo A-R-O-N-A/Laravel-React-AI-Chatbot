@@ -19,7 +19,7 @@ export default function Index() {
 
     const { flash } = usePage().props
 
-    console.log('Message results : ', flash.results)
+    console.log('Message results : ', flash)
 
     const messagesEndRef = useRef<HTMLDivElement>(null)
 

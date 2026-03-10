@@ -40,7 +40,7 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
 
                 {/* file upload button */}
 
-                {/* <FileUpload /> */}
+                <FileUpload />
 
                 <Link href={route('ocr.page')}>
                     <Button

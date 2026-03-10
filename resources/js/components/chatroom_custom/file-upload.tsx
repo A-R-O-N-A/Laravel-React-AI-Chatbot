@@ -15,6 +15,8 @@ import {
 import { Button } from "../ui/button";
 import { FileText } from 'lucide-react';
 
+import { router } from "@inertiajs/react";
+
 export default function FileUpload() {
 
     const [isOpen, setIsOpen] = useState(false)
@@ -27,7 +29,20 @@ export default function FileUpload() {
     const handleFileUpload = () => {
         console.log('trigger upload button')
         // post(route('rag.file_upload'))
-        post(route('documents.store'))
+
+        // post(route('documents.store'))
+        // setIsOpen(false)
+
+        post(route('documents.store'), {
+            onSuccess: () => {
+                console.log('File uploaded successfully');
+                router.reload({ only: ['documents'] }); // refresh documents prop
+                setIsOpen(false);
+            },
+            onError: (error) => {
+                console.log('File upload failed:', error);
+            }
+        })
     }
 
     return (<>

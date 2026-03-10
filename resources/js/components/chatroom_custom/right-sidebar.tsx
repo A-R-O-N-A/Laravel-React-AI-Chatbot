@@ -72,7 +72,7 @@ export function RightSidebar({ chatroom }: { chatroom: any }) {
                         <span className="font-sm">AI Assistant</span>
                     </div>
                     <div className="text-xs text-muted-foreground pl-6">
-                        <p><strong>Model:</strong> Llama 3.2:3B</p>
+                        <p><strong>Model:</strong> Gemma 3 27b</p>
                     </div>
                 </div>
 

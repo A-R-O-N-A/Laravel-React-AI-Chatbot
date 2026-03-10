@@ -58,7 +58,7 @@ export default function DocumentListDialog({ chatroom }: { chatroom: Chatroom })
                 console.log('Could not fetch documents' + error)
             })
 
-    }, [])
+    }, [isOpen])
 
     const handleToggleDocument = (doc: any, isChecked: boolean) => {
 
@@ -164,7 +164,7 @@ export default function DocumentListDialog({ chatroom }: { chatroom: Chatroom })
     // if (documents.length === 0) { return <> No documents found </> }
 
 
-    return (<Dialog>
+    return (<Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
             <Button
                 variant='outline' size='sm' className='w-full justify-start text-sm'

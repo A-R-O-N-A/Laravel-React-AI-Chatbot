@@ -36,13 +36,6 @@ class MessageController extends Controller
             'role' => 'user'
         ]);
 
-        // # now testing the fastapi ai response
-        // $response = Http::post('http://127.0.0.1:8080/api/lab/test/chat/ollama', [
-        //     "data_input" => $request->input('content')
-        // ]);
-        // $fastapi_ai_response = $response->json()['content']
-        // dd($response->json()['content']);
-
         return redirect()->back()->with('message', 'Conversation updated successfully.');
     }
 
@@ -50,7 +43,6 @@ class MessageController extends Controller
     {
         $sielai = new General();
 
-        // ini_set('max_execution_time', 0); // Allow up to 10 minutes
         ini_set('max_execution_time', 3600);
         set_time_limit(3600);
 
@@ -108,13 +100,10 @@ class MessageController extends Controller
 
         // create mesage in db
         Message::create([
-            //     'content' => $fastapi_ai_response,
-            // 'content' => $response,
             'content' => $response->json()['ai_response'],
             'chatroom_id' => $request->input('chatroom_id'),
             'role' => 'assistant',
             'vector_results' => json_encode($results),
-            // 'vector_results' => $results,
         ]);
 
         return redirect()->back()->with([
@@ -162,7 +151,6 @@ class MessageController extends Controller
     {
         $sielai = new General();
         // handle file upload for RAG 
-        // dd($request->all());
 
         $response = Http::post($sielai->ragFileVectorize, [
             "file" => $request->file('file')

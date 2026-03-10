@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
+use App\Http\SIELAI\Routes\General;
+
 class DocumentController extends Controller
 {
     /**
@@ -17,14 +19,6 @@ class DocumentController extends Controller
      */
     public function index()
     {
-
-        // return Inertia::render('documents/Index', [
-        //     'documents' => Document::where('user_id', Auth::id())->get()
-        // ]);
-
-        // $documents = Document::where('user_id', Auth::id())->get();
-        // dd($documents);
-
         return response()->json([
             'documents' => Document::where('user_id', Auth::id())->get()
         ]);
@@ -48,18 +42,14 @@ class DocumentController extends Controller
     }
 
     public function vectorize_test(Request $request) {
+        $sielai = new General();
         $embeddings = $this->fastapi_vectorize($request);
-
-        // return response()->json([
-        //     'embeddings' => $embeddings
-        // ]);
 
         $response = Http::timeout(6000)->connectTimeout(6000)->attach(
             'file',
             $request->file('document')->getContent(),
             $request->file('document')->getClientOriginalName()
-        // )->post('http://127.0.0.1:8080/api/lab/test/rag/file/chat/v2/', [
-        )->post('http://72.62.69.183:8002/api/lab/test/rag/file/chat/v2/', [
+        )->post($sielai->ragFileChatV2, [
             'query' => $request->input('query')
         ]);
 
@@ -72,13 +62,7 @@ class DocumentController extends Controller
 
     public function fastapi_vectorize(Request $request)
     {
-
-        // $response = Http::attach(
-        //     'file',
-        //     $request->file('document')->getContent(),
-        //     $request->file('document')->getClientOriginalName()
-        // // )->post('http://127.0.0.1:8080/api/lab/test/rag/file/vectorize/');
-        // )->post('http://72.62.69.183:8002/api/lab/test/rag/file/vectorize/');
+        $sielai = new General();
 
         $response = Http::timeout(6000)
             ->connectTimeout(6000)
@@ -86,26 +70,19 @@ class DocumentController extends Controller
             'file',
             $request->file('document')->getContent(),
             $request->file('document')->getClientOriginalName()
-        // )->post('http://127.0.0.1:8080/api/lab/test/rag/file/vectorize/');
-        )->post('http://72.62.69.183:8002/api/lab/test/rag/file/vectorize/');
-
-        // dd($response->json()['embeddings']);
+        )->post($sielai->ragFileVectorize);
 
         return $response->json()['embeddings'];
     }
 
     public function store(Request $request)
     {
-        // dd($request->all());
-
         $request->validate([
             'document' => 'required|file|max:102400|mimes:pdf,txt,doc,docx,text/markdown',
             'chatroom_id' => 'nullable|exists:chatrooms,id',
         ]);
 
         $embeddings =  $this->fastapi_vectorize($request);
-
-        // dd($embeddings);
 
         $file = $request->file('document');
         $path = $file->store('documents', 'public');
@@ -116,7 +93,6 @@ class DocumentController extends Controller
             'mime_type' => $file->getClientMimeType(),
             'size' => $file->getSize(),
             'disk' => 'public',
-            // 'user_id' => auth()->id(),
             'user_id' => Auth::id(),
             'embeddings' => $embeddings,
         ]);

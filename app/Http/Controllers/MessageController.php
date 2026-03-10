@@ -226,6 +226,7 @@ class MessageController extends Controller
     }
 
     public function data_analytics(Request $request){
+        $sielai = new General();
 
         $request->validate([
             'dataset' => 'required|file|mimes:csv'
@@ -242,15 +243,7 @@ class MessageController extends Controller
                     file_get_contents($dataset->getRealPath()),
                     $dataset->getClientOriginalName()              
                 )
-                // ->post('http://127.0.0.1:8080/api/data-analytics/data-analytics/analyze');
-                ->post('http://72.62.69.183:8002/api/data-analytics/data-analytics/analyze');
-            
-            // Log::info()('Data Analytics Response:', [
-            //     'status' => $response->status(),
-            //     'body' => $response->json()
-            // ]);
-
-            // dd($response->json());
+                ->post($sielai->dataAnalyticsAnalyze);
 
             if ($response->successful()) {
                 $analyticsResult = $response->json()['data_parsed'];
